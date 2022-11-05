@@ -27,7 +27,7 @@ func main() {
 
 const (
 	RiffHeaderSize           = 8
-	SoundDuration    float64 = 10.0   // seconds
+	SoundDuration    float64 = 10.0  // seconds
 	Frequency        float64 = 440.0 // Hertz/Hz
 	Volume           float64 = 0.5   // 0.0 silent to 1.0 max
 	Channels                 = 2
@@ -36,17 +36,18 @@ const (
 )
 
 func WriteChunk(out io.Writer) error {
-	header, err := writeHeaderChunk(16, 2224)
+
+	format, formatSize, err := writeFormatChunk()
 	if err != nil {
 		return err
 	}
 
-	format, err := writeFormatChunk()
+	data, dataSize, err := writeDataChunk()
 	if err != nil {
 		return err
 	}
 
-	data, err := writeDataChunk()
+	header, err := writeHeaderChunk(formatSize, dataSize)
 	if err != nil {
 		return err
 	}
@@ -75,7 +76,8 @@ func writeHeaderChunk(formatSize, dataSize uint32) ([]byte, error) {
 	writeOffset(0, []byte{0x52, 0x49, 0x46, 0x46}, packet)
 
 	// total size
-	totalSize := 4 + formatSize + dataSize
+	totalSize := (4 + RiffHeaderSize) + (formatSize + RiffHeaderSize) + (dataSize + RiffHeaderSize)
+	fmt.Println("*", totalSize)
 	writeOffset(4, EncodeUint32LE(totalSize), packet)
 
 	// WAVE ascii
@@ -84,8 +86,9 @@ func writeHeaderChunk(formatSize, dataSize uint32) ([]byte, error) {
 	return packet, nil
 }
 
-func writeFormatChunk() ([]byte, error) {
-	packet := make([]byte, RiffHeaderSize+16)
+func writeFormatChunk() ([]byte, uint32, error) {
+	var size uint32 = 16
+	packet := make([]byte, RiffHeaderSize+size)
 
 	var (
 		dataRate       uint32 = Channels * SamplesPerSecond
@@ -104,10 +107,10 @@ func writeFormatChunk() ([]byte, error) {
 	writeOffset(20, EncodeUint16LE(blockAlignment), packet)
 	writeOffset(22, EncodeUint16LE(BitsPerSample), packet)
 
-	return packet, nil
+	return packet, size, nil
 }
 
-func writeDataChunk() ([]byte, error) {
+func writeDataChunk() ([]byte, uint32, error) {
 	var (
 		sampleCount    uint32 = uint32(SoundDuration) * SamplesPerSecond
 		bytesPerSample uint32 = (BitsPerSample-1)/8 + 1
@@ -160,7 +163,7 @@ func writeDataChunk() ([]byte, error) {
 			case 2:
 				// todo
 				writeOffset(8+offset, EncodeInt16LE(int16(sample)), packet)
-				fmt.Println("2 ", sample, "offset ", 8+offset, "vol ", int(vol))
+				// fmt.Println("2 ", sample, "offset ", 8+offset, "vol ", int(vol))
 				break
 			case 3:
 				// todo
@@ -171,14 +174,14 @@ func writeDataChunk() ([]byte, error) {
 				writeOffset(8+offset, EncodeUint32LE(uint32(sample)), packet)
 				break
 			default:
-				return nil, errors.New("invalid bytesPerSample")
+				return nil, dataSize, errors.New("invalid bytesPerSample")
 			}
 
 			offset = offset + int(bytesPerSample)
 		}
 	}
 
-	return packet, nil
+	return packet, dataSize, nil
 }
 
 func EncodeUint16LE(x uint16) []byte {
