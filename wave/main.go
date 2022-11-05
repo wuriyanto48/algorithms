@@ -53,10 +53,10 @@ func WriteChunk(out io.Writer) error {
 		return err
 	}
 
-	allChuck := append(header, format...)
-	allChuck = append(allChuck, data...)
+	allChunk := append(header, format...)
+	allChunk = append(allChunk, data...)
 
-	_, err = out.Write(allChuck)
+	_, err = out.Write(allChunk)
 	if err != nil {
 		return err
 	}
