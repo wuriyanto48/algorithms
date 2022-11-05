@@ -27,7 +27,7 @@ func main() {
 
 const (
 	RiffHeaderSize           = 8
-	SoundDuration    float64 = 3.0   // seconds
+	SoundDuration    float64 = 10.0   // seconds
 	Frequency        float64 = 440.0 // Hertz/Hz
 	Volume           float64 = 0.5   // 0.0 silent to 1.0 max
 	Channels                 = 2
