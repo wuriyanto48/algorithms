@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// https://docs.fileformat.com/audio/wav/
 func main() {
 
 	outputFile, err := os.Create("out.wav")
@@ -31,7 +32,7 @@ const (
 	Frequency        float64 = 440.0 // Hertz/Hz
 	Volume           float64 = 0.5   // 0.0 silent to 1.0 max
 	Channels                 = 2
-	SamplesPerSecond         = 22000
+	SamplesPerSecond         = 44100
 	BitsPerSample            = 16
 )
 
@@ -91,10 +92,14 @@ func writeFormatChunk() ([]byte, uint32, error) {
 	packet := make([]byte, RiffHeaderSize+size)
 
 	var (
-		dataRate       uint32 = Channels * SamplesPerSecond
+		dataRate       uint32 = (Channels * BitsPerSample * SamplesPerSecond) / 8
 		bytesPerSample uint32 = (BitsPerSample-1)/8 + 1
 		blockAlignment uint16 = Channels * uint16(bytesPerSample)
 	)
+
+	fmt.Println("dataRate: ", dataRate)
+	fmt.Println("bytesPerSample: ", bytesPerSample)
+	fmt.Println("blockAlignment: ", blockAlignment)
 
 	// fmt ascii
 	writeOffset(0, []byte{0x66, 0x6d, 0x74, 0x20}, packet)
