@@ -55,31 +55,31 @@ func main() {
 	// 	{0, 9, 18},
 	// }
 
-	// lightenKernes := [][]int32{
+	// lightenkernels := [][]int32{
 	// 	{0, 0, 0},
 	// 	{0, 12, 0},
 	// 	{0, 0, 0},
 	// }
 
-	// darkenKernes := [][]int32{
+	// darkenkernels := [][]int32{
 	// 	{0, 0, 0},
 	// 	{0, 6, 0},
 	// 	{0, 0, 0},
 	// }
 
-	// testKernes := [][]int32{
+	// testkernels := [][]int32{
 	// 	{2, 22, 1},
 	// 	{22, 1, -22},
 	// 	{1, -22, -2},
 	// }
 
-	// sharpenKernes := [][]int32{
+	// sharpenkernels := [][]int32{
 	// 	{-1, -1, -1},
 	// 	{-1, 9, -1},
 	// 	{-1, -1, -1},
 	// }
 
-	// raiesedKernes := [][]int32{
+	// raiesedkernels := [][]int32{
 	// 	{0, 0, -2},
 	// 	{0, 2, 0},
 	// 	{1, 0, 0},
