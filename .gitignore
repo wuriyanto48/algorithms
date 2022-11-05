@@ -1,3 +1,7 @@
 *.txt
 
+audio-analysis/
 node_modules/
+
+*.wav
+*.png
