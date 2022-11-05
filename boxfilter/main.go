@@ -49,23 +49,53 @@ func main() {
 	// 	{1, 2, 1},
 	// }
 
+	// embossKernels := [][]int32{
+	// 	{-18, -9, 0},
+	// 	{-9, 9, 9},
+	// 	{0, 9, 18},
+	// }
+
+	// lightenKernes := [][]int32{
+	// 	{0, 0, 0},
+	// 	{0, 12, 0},
+	// 	{0, 0, 0},
+	// }
+
+	// darkenKernes := [][]int32{
+	// 	{0, 0, 0},
+	// 	{0, 6, 0},
+	// 	{0, 0, 0},
+	// }
+
+	// testKernes := [][]int32{
+	// 	{2, 22, 1},
+	// 	{22, 1, -22},
+	// 	{1, -22, -2},
+	// }
+
 	// sharpenKernes := [][]int32{
 	// 	{-1, -1, -1},
 	// 	{-1, 9, -1},
 	// 	{-1, -1, -1},
 	// }
 
-	raiesedKernes := [][]int32{
-		{0, 0, -2},
-		{0, 2, 0},
-		{1, 0, 0},
-	}
+	// raiesedKernes := [][]int32{
+	// 	{0, 0, -2},
+	// 	{0, 2, 0},
+	// 	{1, 0, 0},
+	// }
 
 	// edgeDetections := [][]int32{
 	// 	{-1, -1, -1},
 	// 	{-1, 8, -1},
 	// 	{-1, -1, -1},
 	// }
+
+	edgeDetections2 := [][]int32{
+		{0, 9, 0},
+		{9, -36, 9},
+		{0, 9, 0},
+	}
 
 	// ridgeDetections := [][]int32{
 	// 	{-1, -1, -1},
@@ -127,7 +157,7 @@ func main() {
 					// warning: this is well messed up your terminal
 					// fmt.Println(r, " ", cc.R, " | ", g, " ",cc.G, " | ", b, " ", cc.B, "|")
 
-					kernel := raiesedKernes[ky][kx]
+					kernel := edgeDetections2[ky][kx]
 					// fmt.Print(kernel, " ")
 
 					sumRed += kernel * r
@@ -145,6 +175,8 @@ func main() {
 			if denominator <= 0 {
 				denominator = 1
 			}
+
+			denominator = 9
 
 			sumRed = sumRed / denominator
 			sumGreen = sumGreen / denominator
