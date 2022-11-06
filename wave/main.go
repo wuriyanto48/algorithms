@@ -27,13 +27,19 @@ func main() {
 }
 
 const (
-	RiffHeaderSize           = 8
-	SoundDuration    float64 = 10.0  // seconds
-	Frequency        float64 = 440.0 // Hertz/Hz
-	Volume           float64 = 0.5   // 0.0 silent to 1.0 max
-	Channels                 = 2
-	SamplesPerSecond         = 44100
-	BitsPerSample            = 16
+	RiffHeaderSize         = 8
+	SoundDuration  float64 = 10.0 // seconds
+
+	// Frequency with 440 pitch standard https://en.wikipedia.org/wiki/A440_(pitch_standard)
+	Frequency float64 = 440.0 // Hertz/Hz | 440 Hz, or 440 cycles per second
+	Volume    float64 = 0.5   // 0.0 silent to 1.0 max
+	Channels          = 2
+
+	// SamplesPerSecond
+	// Sample (convert continuous data to discrete data) https://en.wikipedia.org/wiki/Sampling_(signal_processing)
+	// PCM https://en.wikipedia.org/wiki/Pulse-code_modulation
+	SamplesPerSecond = 44100
+	BitsPerSample    = 16
 )
 
 func WriteChunk(out io.Writer) error {
@@ -78,7 +84,7 @@ func writeHeaderChunk(formatSize, dataSize uint32) ([]byte, error) {
 
 	// total size
 	totalSize := (4 + RiffHeaderSize) + (formatSize + RiffHeaderSize) + (dataSize + RiffHeaderSize)
-	fmt.Println("*", totalSize)
+	fmt.Println("totalSize: ", totalSize)
 	writeOffset(4, EncodeUint32LE(totalSize), packet)
 
 	// WAVE ascii
@@ -126,9 +132,9 @@ func writeDataChunk() ([]byte, uint32, error) {
 	)
 
 	fmt.Println("--------")
-	fmt.Println(sampleCount)
-	fmt.Println(bytesPerSample)
-	fmt.Println(dataSize)
+	fmt.Println("sampleCount: ", sampleCount)
+	fmt.Println("bytesPerSample: ", bytesPerSample)
+	fmt.Println("dataSize: ", dataSize)
 
 	packet := make([]byte, RiffHeaderSize+dataSize)
 
@@ -138,6 +144,8 @@ func writeDataChunk() ([]byte, uint32, error) {
 	// data size
 	writeOffset(4, EncodeUint32LE(dataSize), packet)
 
+	// https://en.wikipedia.org/wiki/Sampling_(signal_processing)
+	// convert continuous data to discrete data
 	for i = 0; i < sampleCount; i++ {
 		var (
 			sample int
@@ -145,7 +153,12 @@ func writeDataChunk() ([]byte, uint32, error) {
 			w      float64 = 2 * math.Pi * float64(i) / (SamplesPerSecond / freq)
 			vol    float64 = math.Sin(w) * Volume
 		)
+		// fmt.Println("w: ", w)
 
+		// if BitsPerSample less than or equal 8
+		// store sample as 8 bit integer sign or unsigned
+		// otherwise
+		// store sample as 16 bit (that range from -32768 to 32767) integer signed or unsigned Little Endian
 		if BitsPerSample <= 8 {
 			var rangeTop int = (1 << BitsPerSample) - 1
 			sample = int(((vol + 1) / 2) * float64(rangeTop))
