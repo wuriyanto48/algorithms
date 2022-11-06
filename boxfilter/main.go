@@ -154,7 +154,7 @@ func main() {
 					var g int32 = int32(cc.G) // green
 					var b int32 = int32(cc.B) // blue
 
-					// warning: this is well messed up your terminal
+					// warning: this is will messed up your terminal
 					// fmt.Println(r, " ", cc.R, " | ", g, " ",cc.G, " | ", b, " ", cc.B, "|")
 
 					kernel := edgeDetections2[ky][kx]

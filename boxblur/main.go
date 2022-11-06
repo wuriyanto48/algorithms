@@ -100,7 +100,7 @@ func BoxBlur(kernelRadius int, in io.Reader, out io.Writer) error {
 					var g int32 = int32(cc.G) // green
 					var b int32 = int32(cc.B) // blue
 
-					// warning: this is well messed up your terminal
+					// warning: this is will messed up your terminal
 					// fmt.Print(r, " ", g, " ", b, "|")
 
 					kernel := boxKernels[ky][kx]
