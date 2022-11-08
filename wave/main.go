@@ -39,7 +39,9 @@ const (
 	// Sample (convert continuous data to discrete data) https://en.wikipedia.org/wiki/Sampling_(signal_processing)
 	// PCM https://en.wikipedia.org/wiki/Pulse-code_modulation
 	SamplesPerSecond = 44100
-	BitsPerSample    = 16
+
+	// BitPerSample / Bit Depth https://en.wikipedia.org/wiki/Audio_bit_depth
+	BitsPerSample = 16
 )
 
 func WriteChunk(out io.Writer) error {
@@ -181,7 +183,7 @@ func writeDataChunk() ([]byte, uint32, error) {
 			case 2:
 				// todo
 				writeOffset(8+offset, EncodeInt16LE(int16(sample)), packet)
-				// fmt.Println("2 ", sample, "offset ", 8+offset, "vol ", int(vol))
+				// fmt.Println("2 ", sample, "offset ", 8+offset, "vol ", vol, "bd8: ", ((vol + 1) / 2) * float64((1 << 8) - 1))
 				break
 			case 3:
 				// todo
