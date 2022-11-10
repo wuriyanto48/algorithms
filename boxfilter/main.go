@@ -49,11 +49,11 @@ func main() {
 	// 	{1, 2, 1},
 	// }
 
-	// embossKernels := [][]int32{
-	// 	{-18, -9, 0},
-	// 	{-9, 9, 9},
-	// 	{0, 9, 18},
-	// }
+	embossKernels := [][]int32{
+		{-18, -9, 0},
+		{-9, 9, 9},
+		{0, 9, 18},
+	}
 
 	// lightenkernels := [][]int32{
 	// 	{0, 0, 0},
@@ -91,11 +91,11 @@ func main() {
 	// 	{-1, -1, -1},
 	// }
 
-	edgeDetections2 := [][]int32{
-		{0, 9, 0},
-		{9, -36, 9},
-		{0, 9, 0},
-	}
+	// edgeDetections2 := [][]int32{
+	// 	{0, 9, 0},
+	// 	{9, -36, 9},
+	// 	{0, 9, 0},
+	// }
 
 	// ridgeDetections := [][]int32{
 	// 	{-1, -1, -1},
@@ -157,7 +157,7 @@ func main() {
 					// warning: this is will messed up your terminal
 					// fmt.Println(r, " ", cc.R, " | ", g, " ",cc.G, " | ", b, " ", cc.B, "|")
 
-					kernel := edgeDetections2[ky][kx]
+					kernel := embossKernels[ky][kx]
 					// fmt.Print(kernel, " ")
 
 					sumRed += kernel * r
