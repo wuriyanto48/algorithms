@@ -17,8 +17,8 @@ func main() {
 	var width int = 1080
 	var height int = 1080
 
-	var rl float64 = -0.444 // real number
-	var im float64 = 0.7563 // imaginary number
+	var rl float64 = -0.74543 // real number
+	var im float64 = 0.11301 // imaginary number
 
 	outFile, err := os.Create(fileName)
 	if err != nil {
